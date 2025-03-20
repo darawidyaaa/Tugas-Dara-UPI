@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pegawai</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Pegawai</th>
+                <th>Umur</th>
+                <th>Jabatan</th>
+                <th>Status</th>
+                <th>Gaji Pokok</th>
+                <th>Tunjangan Jabatan</th>
+                <th>BPJS</th>
+                <th>Tunjangan Keluarga</th>
+                <th>Total Gaji</th>
+            </tr>
+        </thead>
+        <tbody id="dataPegawai"></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="8" style="text-align:right; font-weight:bold;">Total Gaji:</td>
+                <td id="totalGajiCell"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let pegawai = {
+                nama: "Dodi Prayodi",
+                umur: 25,
+                jabatan: "Manajer",
+                status: "Menikah"
+            };
+
+            let gajiPokok = pegawai.jabatan === "Manajer" ? 15000000 :
+                            pegawai.jabatan === "Asisten Manajer" ? 10000000 :
+                            pegawai.jabatan === "Staff" ? 5000000 : 0;
+
+            let tunjanganJabatan = 0.15 * gajiPokok;
+            let bpjs = 0.10 * gajiPokok;
+            let tunjanganKeluarga = pegawai.status === "Menikah" ? 0.20 * gajiPokok : 0;
+            let totalGaji = gajiPokok + tunjanganJabatan - bpjs + tunjanganKeluarga;
+
+            let tbody = document.getElementById("dataPegawai");
+            let tr = document.createElement("tr");
+
+            let data = [
+                pegawai.nama, pegawai.umur, pegawai.jabatan, pegawai.status,
+                `Rp ${gajiPokok.toLocaleString()}`, `Rp ${tunjanganJabatan.toLocaleString()}`,
+                `Rp ${bpjs.toLocaleString()}`, `Rp ${tunjanganKeluarga.toLocaleString()}`,
+                `Rp ${totalGaji.toLocaleString()}`
+            ];
+
+            data.forEach(item => {
+                let td = document.createElement("td");
+                td.textContent = item;
+                tr.appendChild(td);
+            });
+
+            tbody.appendChild(tr);
+
+            // Tambahkan total gaji ke dalam tfoot
+            document.getElementById("totalGajiCell").textContent = `Rp ${totalGaji.toLocaleString()}`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+// Class untuk merepresentasikan kendaraan
+class Kendaraan {
+    constructor(nama, tipe) {
+        this.nama = nama;
+        this.tipe = tipe;
+    }
+
+    deskripsi() {
+        return `${this.nama} adalah kendaraan tipe ${this.tipe}.`;
+    }
+}
+
+// Class untuk merepresentasikan pelanggan
+class Pelanggan {
+    constructor(nama, nomorTelepon) {
+        this.nama = nama;
+        this.nomorTelepon = nomorTelepon;
+        this.kendaraanDisewa = null;
+    }
+
+    sewaKendaraan(kendaraan) {
+        if (this.kendaraanDisewa) {
+            alert(`${this.nama} sudah menyewa kendaraan.`);
+        } else {
+            this.kendaraanDisewa = kendaraan;
+            alert(`${this.nama} telah menyewa ${kendaraan.nama}.`);
+            updateDaftarPelanggan();
+        }
+    }
+
+    kembalikanKendaraan() {
+        if (this.kendaraanDisewa) {
+            alert(`${this.nama} telah mengembalikan ${this.kendaraanDisewa.nama}.`);
+            this.kendaraanDisewa = null;
+            updateDaftarPelanggan();
+        } else {
+            alert(`${this.nama} tidak memiliki kendaraan yang disewa.`);
+        }
+    }
+}
+
+// Daftar pelanggan
+const daftarPelanggan = [];
+
+// Fungsi untuk menambahkan pelanggan yang menyewa kendaraan
+function tambahPelanggan() {
+    const nama = document.getElementById("nama").value;
+    const nomorTelepon = document.getElementById("nomorTelepon").value;
+    const kendaraan = document.getElementById("kendaraan").value;
+    
+    if (!nama || !nomorTelepon || !kendaraan) {
+        alert("Harap isi semua data!");
+        return;
+    }
+
+    const kendaraanObj = new Kendaraan(kendaraan, "Kendaraan");
+    const pelanggan = new Pelanggan(nama, nomorTelepon);
+    pelanggan.sewaKendaraan(kendaraanObj);
+    daftarPelanggan.push(pelanggan);
+    updateDaftarPelanggan();
+}
+
+// Fungsi untuk menampilkan daftar pelanggan yang sedang menyewa kendaraan
+function updateDaftarPelanggan() {
+    const daftarElement = document.getElementById("daftarPelanggan");
+    daftarElement.innerHTML = "";
+    
+    daftarPelanggan.forEach(pelanggan => {
+        if (pelanggan.kendaraanDisewa) {
+            const li = document.createElement("li");
+            li.textContent = `${pelanggan.nama} (${pelanggan.nomorTelepon}) menyewa ${pelanggan.kendaraanDisewa.nama}.`;
+            daftarElement.appendChild(li);
+        }
+    });
+}
+
+// HTML dan CSS
+document.write(`
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label, input, select, button { display: block; margin-bottom: 10px; }
+</style>
+
+<h2>Manajemen Transportasi</h2>
+<label for="nama">Nama:</label>
+<input type="text" id="nama">
+
+<label for="nomorTelepon">Nomor Telepon:</label>
+<input type="text" id="nomorTelepon">
+
+<label for="kendaraan">Kendaraan:</label>
+<select id="kendaraan">
+    <option value="Honda Beat">Honda Beat</option>
+    <option value="Toyota Avanza">Toyota Avanza</option>
+</select>
+
+<button onclick="tambahPelanggan()">Tambah Pelanggan</button>
+
+<h3>Daftar Pelanggan yang Menyewa:</h3>
+<ul id="daftarPelanggan"></ul>
+`);

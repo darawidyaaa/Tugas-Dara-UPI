@@ -1,0 +1,35 @@
+// Daftar produk awal
+let products = [
+    { id: 1, name: "Laptop", price: 10000000 },
+    { id: 2, name: "Smartphone", price: 5000000 },
+    { id: 3, name: "Headphone", price: 750000 },
+    { id: 4, name: "Keyboard", price: 300000 },
+    { id: 5, name: "Mouse", price: 150000 }
+];
+
+// Menampilkan semua produk
+function displayProducts() {
+    console.log("Daftar Produk:");
+    products.forEach(({ id, name, price }) => {
+        console.log(`${id}. ${name} - Rp ${price}`);
+    });
+}
+
+// Menambahkan produk baru
+function addProduct(name, price) {
+    let newId = products.length ? products[products.length - 1].id + 1 : 1;
+    products = [...products, { id: newId, name, price }];
+    console.log(`Produk ${name} berhasil ditambahkan.`);
+}
+
+// Menghapus produk berdasarkan ID
+function removeProduct(id) {
+    products = products.filter(product => product.id !== id);
+    console.log(`Produk dengan ID ${id} berhasil dihapus.`);
+}
+
+// Contoh penggunaan
+displayProducts();
+addProduct("Tablet", 6000000);
+removeProduct(3);
+displayProducts();
